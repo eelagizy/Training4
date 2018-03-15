@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/default_wallpaper"
+    android:orientation="vertical"
+    tools:context="com.judy.emano0o87.training4.ChatActivity">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/myActionBar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:theme="@style/MyActionBar"
+        >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            >
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/pic"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:src="@drawable/avatar_contact" />
+            <TextView
+                android:id="@+id/name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="4dp"
+                android:text="Eman"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="5dp"
+                android:textColor="@android:color/white"
+                android:layout_toRightOf="@+id/pic"
+                android:layout_alignBaseline="@id/pic"                />
+            <TextView
+                android:id="@+id/status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:text="online"
+                android:layout_below="@id/name"
+                android:layout_toEndOf="@id/pic"
+                android:textColor="@android:color/white"
+                android:textSize="11sp"
+
+                />
+        </RelativeLayout>
+    </android.support.v7.widget.Toolbar>
+
+    <ListView
+        android:id="@+id/list"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="9"
+        android:layout_margin="10dp"
+       >
+
+    </ListView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_margin="7dp">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            android:layout_weight="7"
+            android:background="@drawable/input"
+            android:orientation="horizontal">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/emoji"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start|center_vertical"
+                android:layout_weight="1"
+                android:src="@drawable/input_emoji" />
+
+            <EditText
+                android:id="@+id/msgEdit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|center_vertical"
+                android:layout_weight="4"
+                android:textSize="18sp"
+                android:background="@drawable/edittext_bg"
+                android:hint="@string/type_msg"
+                android:padding="7dp" />
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/camera"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end|center_vertical"
+                android:layout_weight="1"
+                android:src="@drawable/input_cam" />
+        </LinearLayout>
+
+        <android.support.design.widget.FloatingActionButton
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:id="@+id/sendMsg"
+            android:background="@drawable/input_circle"
+            android:src="@drawable/input_send" />
+
+    </LinearLayout>
+</LinearLayout>

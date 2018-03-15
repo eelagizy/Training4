@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+<style name="AppTheme"  parent="@style/Theme.AppCompat.Light.NoActionBar">
+    <item name="android:colorAccent">@color/colorAccent</item>
+    <item name="android:colorPrimary">@color/colorPrimary</item>
+
+    <item name="android:colorPrimaryDark">@color/colorPrimaryDark</item>
+    <item name="android:windowActionBar">false</item>
+    <item name="android:windowNoTitle">true</item>
+    <item name="android:actionBarStyle">@style/MyActionBar</item>
+</style>
+
+    <style name="MyActionBar" parent="ThemeOverlay.AppCompat.ActionBar">
+       <item name="android:homeAsUpIndicator">@drawable/back_arrow</item>
+        <item name="android:background">@color/colorPrimary</item>
+    </style>
+
+    <style name="Rgrav">
+        <item name="android:layout_gravity">right</item>
+        <item name="android:background">@drawable/balloon_outgoing_normal</item>
+    </style>
+
+    <style name="Lgrav">
+        <item name="android:layout_gravity">left</item>
+        <item name="android:background">@drawable/balloon_incoming_normal</item>
+    </style>
+
+
+</resources>

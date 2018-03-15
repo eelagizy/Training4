@@ -1,0 +1,9 @@
+<resources>
+
+ <string name="app_name">Training 4</string>
+    <string name="type_msg">type a message</string>
+    <string name="CaptureImage">Capture Image</string>
+    <string name="CaptureVideo">Capture Video</string>
+    <string name="Makeachoice">Make a choice</string>
+
+</resources>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
+
+    <item android:id="@+id/sendAll" android:title=""
+        android:icon="@drawable/ic_done_white_24dp"
+        app:showAsAction="ifRoom"/>
+
+    <item android:id="@+id/readAll" android:title=""
+        android:icon="@drawable/ic_done_all_white_24dp"
+        app:showAsAction="ifRoom"/>
+
+    <item android:id="@+id/partnerMsg" android:title=""
+        android:icon="@drawable/ic_compare_arrows_white_24dp"
+        app:showAsAction="ifRoom"/>
+
+</menu>
