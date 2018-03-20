@@ -42,7 +42,14 @@ public class DialogActivity extends AppCompatActivity {
         //1st : create intent with action image capture
         Intent takePhotoIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         //2nd : specify the file place that camera will save the photo
-        ImageFile = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES),"imageName"+ LocalTime.now());
+        //getExternalFilesDir => return a private external directory for the app
+        //with the given name
+        //bothh return standard File
+        ImageFile = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+                ,"imageName"+ LocalTime.now());
+        //if use Environment.getExternalstoragepublicDirectory(name) .. like photo , music
+        //it will return public directory for common files
+
        //convert the image file to Uri
         imageUri = Uri.fromFile(ImageFile);
 

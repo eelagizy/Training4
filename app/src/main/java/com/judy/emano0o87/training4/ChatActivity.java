@@ -8,10 +8,13 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.ContextMenu;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -35,10 +38,11 @@ public class ChatActivity extends AppCompatActivity {
     ListView listView;
     String msgTime;
     ImageView messagestatus;
-    ImageView imageMsgView ;
+    ImageView imageMsgView;
     static ArrayList<Message> senddata;
     long start;
     de.hdodenhof.circleimageview.CircleImageView camerChoice;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,7 +55,7 @@ public class ChatActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_chat);
 
-        if(senddata == null)
+        if (senddata == null)
             senddata = new ArrayList<>();
         AndroidThreeTen.init(this);
         start = System.currentTimeMillis();
@@ -60,9 +64,18 @@ public class ChatActivity extends AppCompatActivity {
         setSupportActionBar((android.support.v7.widget.Toolbar) findViewById(R.id.myActionBar));
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
-            actionBar.setDisplayHomeAsUpEnabled(true);
+            //   actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setDisplayShowTitleEnabled(false);
         }
+        //action bar back button
+        Button backBtn = (Button) findViewById(R.id.backBtn);
+        backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
         imageMsgView = (ImageView) findViewById(R.id.imageMsg);
         messagetxt = (EditText) findViewById(R.id.msgEdit);
         messagestatus = (ImageView) findViewById(R.id.messagestatus);
@@ -89,24 +102,49 @@ public class ChatActivity extends AppCompatActivity {
             public void afterTextChanged(Editable s) {
             }
         });
+
         FloatingActionButton sendBtn = (FloatingActionButton) findViewById(R.id.sendMsg);
         sendBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 insertNewMesg();
-            }});
+            }
+        });
 
         //camera choice button to show dialog
         camerChoice = (CircleImageView) findViewById(R.id.camera);
         camerChoice.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent showDialog = new Intent(ChatActivity.this,DialogActivity.class);
-                startActivity(showDialog);
+                //  showMenu(camerChoice);  //shortcut menu
+                //  register context menu
+                registerForContextMenu(camerChoice);
+                openContextMenu(camerChoice);
+//                Intent showDialog = new Intent(ChatActivity.this,DialogActivity.class);
+//                startActivity(showDialog);
             }
         });
 
     }
+
+    public void showMenu(View v) {
+        // Context wrapper = new ContextThemeWrapper(getApplicationContext(), R.style.imagemenu);
+        //  PopupMenu popup = new PopupMenu(wrapper, v);
+
+        // This activity implements OnMenuItemClickListener
+        //popup.setOnMenuItemClickListener((PopupMenu.OnMenuItemClickListener) this);
+        //  popup.inflate(R.menu.video_image_menu);
+        //  popup.show();
+    }
+    //create context menu
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View view, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, view, menuInfo);
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.video_image_menu, menu);
+    }
+
 
 //    @Override
 //    protected void onRestoreInstanceState(Bundle savedInstanceState) {
@@ -124,21 +162,20 @@ public class ChatActivity extends AppCompatActivity {
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-   //     imageMsgView =(ImageView) findViewById(R.id.imageMsg);
+        //     imageMsgView =(ImageView) findViewById(R.id.imageMsg);
         super.onSaveInstanceState(outState);
     }
 
     private void insertNewMesg() {
-msgTime =  msgTime = TimeUnit.SECONDS.toSeconds((System.currentTimeMillis() - start) / 1000) +
-        " seconds ago , " +
-        LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss a"));
+        msgTime = TimeUnit.SECONDS.toSeconds((System.currentTimeMillis() - start) / 1000) +
+                " seconds ago , " +
+                LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss a"));
 
         if (messagetxt.getText().toString().length() == 0) {
             Toast.makeText(ChatActivity.this, "You need to type msg!!", Toast.LENGTH_LONG).show();
         } else {
-            newMessage = new Message(messagetxt.getText().toString(),msgTime,
-                    R.drawable.msg_status_gray_waiting,"sender");
-
+            newMessage = new TextMessage(messagetxt.getText().toString(),msgTime,
+                    "sender",R.drawable.msg_status_gray_waiting);
             senddata.add(newMessage);
             ((BaseAdapter) listView.getAdapter()).notifyDataSetChanged();
         }
@@ -147,7 +184,7 @@ msgTime =  msgTime = TimeUnit.SECONDS.toSeconds((System.currentTimeMillis() - st
 
     private void insertNewImageMsg() {
 
-        msgTime =  msgTime = TimeUnit.SECONDS.toSeconds((System.currentTimeMillis() - start) / 1000) +
+        msgTime=TimeUnit.SECONDS.toSeconds((System.currentTimeMillis() - start) / 1000) +
                 " seconds ago , " +
                 LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss a"));
 
@@ -155,13 +192,13 @@ msgTime =  msgTime = TimeUnit.SECONDS.toSeconds((System.currentTimeMillis() - st
         if (in.hasExtra("imageUrl")) {
             Uri image = Uri.parse(in.getStringExtra("imageUrl"));
             if (image != null) {
-                Message msg = new Message(true
-                        , R.drawable.msg_status_gray_waiting,
-                        "sender",image.getPath(),msgTime);
+             Message msg = new MediaMessage(msgTime, "sender",
+                     R.drawable.msg_status_gray_waiting, image.getPath());
                 senddata.add(msg);
             }
         }
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         //return super.onCreateOptionsMenu(menu);
@@ -189,16 +226,32 @@ msgTime =  msgTime = TimeUnit.SECONDS.toSeconds((System.currentTimeMillis() - st
                 return super.onOptionsItemSelected(item);
         }
     }
+
     //send from other side
     private void resend() {
-        if (senddata.size()>0)
-        {
-            Message msg = new Message(senddata.get(senddata.size()-1).getMessageText(),
-                    senddata.get(senddata.size()-1).getMessageTime(),
-                    senddata.get(senddata.size()-1).getMessageStatus(),"reciever");
-            senddata.add(msg);
+        Message replyMsg;
+        if (senddata.size() > 0) {
+            Message msg = senddata.get(senddata.size() - 1);
+            if (msg instanceof TextMessage)
+            {
+                replyMsg = new TextMessage(((TextMessage) msg).getMessageText(),
+                        ((TextMessage)msg).getMessageTime(),"reciever",
+                        msg.getMessageStatus());
+            }
+            else if(msg instanceof MediaMessage)
+            {
+                replyMsg = new MediaMessage(((MediaMessage) msg).getMessageTime(),
+                       "reciever",
+                        msg.getMessageStatus(),((MediaMessage) msg).getImagePath());
+            }
+else
+    replyMsg = msg;
+//                    new Message(senddata.get(senddata.size() - 1).getMessageText(),
+//                    senddata.get(senddata.size() - 1).getMessageTime(),
+//                    senddata.get(senddata.size() - 1).getMessageStatus(), "reciever");
+           senddata.add(replyMsg);
             ((BaseAdapter) listView.getAdapter()).notifyDataSetChanged();
-    }else return;
+        } else return;
     }
 
     //two check - ReadAll
@@ -213,9 +266,10 @@ msgTime =  msgTime = TimeUnit.SECONDS.toSeconds((System.currentTimeMillis() - st
     private void sendAll() {
 
         for (int i = 0; i < senddata.size(); i++) {
-            senddata.get(i).setMessageStatus(R.drawable.msg_status_server_receive);
+            senddata.get(i).setMessageStatus
+                    (R.drawable.msg_status_server_receive);
         }
-     ((BaseAdapter) listView.getAdapter()).notifyDataSetChanged();
+        ((BaseAdapter) listView.getAdapter()).notifyDataSetChanged();
     }
     //    protected void onSaveInstanceState(Bundle outState) {
     //        outState.putSerializable("data", senddata);
