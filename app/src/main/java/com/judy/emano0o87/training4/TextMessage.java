@@ -38,7 +38,7 @@ public class TextMessage extends Message {
 
             } else if (getMessageType() == "reciever") {
 
-                view = inflater.inflate(R.layout.row_item_reciever,null,false);
+                view = inflater.inflate(R.layout.row_item_reciever,parent,false);
                 holder = new viewHolder(view);
                 view.setTag(holder);
             }
