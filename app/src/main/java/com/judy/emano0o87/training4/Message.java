@@ -1,58 +1,15 @@
 package com.judy.emano0o87.training4;
 
-import java.io.Serializable;
+import android.content.Context;
+import android.view.View;
+import android.view.ViewGroup;
 
 /**
  * Created by Administrator on 3/12/2018.
  */
-public class Message implements Serializable {
-    private String messageText;
+public abstract class Message  {
     private String messageTime;
-    private int messageStatus;
-    private String MessageType;
-    private String ImagePath;
-
-    public boolean getImageId() {
-        return imageId;
-    }
-
-    public void setImageId(boolean imageId) {
-        this.imageId = imageId;
-    }
-
-    private boolean imageId = false;
-
-
-   public Message(String messagetxt,String messagetime,int messagestat,String type)
-   {
-       this.messageText=messagetxt;
-       this.messageTime = messagetime;
-       this.messageStatus = messagestat;
-       this.setMessageType(type);
-   }
-
-   public Message(boolean hasImage ,int messageStatus, String msgType,String imagePath , String msgTime)
-   {
-       MessageType = msgType;
-       imageId = hasImage;
-       this.messageStatus= messageStatus ;
-       this.ImagePath = imagePath;
-       this.messageTime = msgTime;
-   }
-
-    public String getMessageText() {
-        return messageText;
-    }
-    public void setMessageText(String messageText) {
-        this.messageText = messageText;
-    }
-    public String getMessageTime() {
-        return messageTime;
-    }
-
-    public void setMessageTime(String messageTime) {
-        this.messageTime = messageTime;
-    }
+    private String messageType;
 
     public int getMessageStatus() {
         return messageStatus;
@@ -62,19 +19,35 @@ public class Message implements Serializable {
         this.messageStatus = messageStatus;
     }
 
+    private int messageStatus;
+
+    public Message(String Mtime , String Mtype , int status)
+    {
+        this.messageTime = Mtime;
+        this.messageType = Mtype;
+        this.messageStatus = status;
+    }
+
     public String getMessageType() {
-        return MessageType;
+        return messageType;
     }
 
     public void setMessageType(String messageType) {
-        MessageType = messageType;
+        this.messageType = messageType;
     }
 
-    public String getImagePath() {
-        return ImagePath;
+    public String getMessageTime() {
+        return messageTime;
     }
 
-    public void setImagePath(String imagePath) {
-        ImagePath = imagePath;
+    public void setMessageTime(String messageTime) {
+        this.messageTime = messageTime;
     }
+
+   public abstract View setMessageView(Context context, View view,ViewGroup parent);
+
+
+
+
+
 }
